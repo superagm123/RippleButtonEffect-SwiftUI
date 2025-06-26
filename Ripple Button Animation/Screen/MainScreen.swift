@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct MainScreen: View {
-    @State private var trigger: Bool = false
     @State private var showPopUpView: Bool = false
-    @State private var model: RippleModel = .init()
     
     var text: some View {
         Text("Start")
@@ -33,7 +31,7 @@ struct MainScreen: View {
                 }
             }){
                 text
-                    .rippleEffect(model: model)
+                    .rippleEffect(rippleShape: .rect(cornerRadius: 25), color: .pink, width: 150, height: 250)
             }
             ZStack {
                 if showPopUpView {

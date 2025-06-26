@@ -6,13 +6,22 @@
 //
 import SwiftUI
 
-struct RippleView: View {
+struct RippleView<RippleShape: Shape>: View {
+    let rippleShape: RippleShape
+    let color: Color
     var model: RippleModel
     
     var body: some View {
         ZStack {
-            CustomCircle(color: model.color, width: model.width, height: model.height, scale: model.scale1)
-            CustomCircle(color: model.color, width: model.width, height: model.height, scale: model.scale2)
+            rippleShape
+                .stroke(color, lineWidth: 1)
+                .frame(width: model.width, height: model.height)
+                .scaleEffect(model.scale1)
+            
+            rippleShape
+                .stroke(color, lineWidth: 1)
+                .frame(width: model.width, height: model.height)
+                .scaleEffect(model.scale2)
         }
     }
 }

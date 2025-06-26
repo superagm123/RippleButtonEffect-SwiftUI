@@ -6,15 +6,27 @@
 //
 import SwiftUI
 
-struct RippleModifier: ViewModifier {
-    let model: RippleModel
+struct RippleModifier<RippleShape: Shape>: ViewModifier {
+    let rippleShape: RippleShape
+    let color: Color
+    let width: CGFloat
+    let height: CGFloat
+    
+    init(rippleShape: RippleShape = .circle, color: Color = .green, width: CGFloat = 150, height: CGFloat = 150){
+        self.rippleShape = rippleShape
+        self.color = color
+        self.width = width
+        self.height = height
+    }
     
     func body(content: Content) -> some View {
         content
-            .keyframeAnimator(initialValue: model){view, value in
+            .keyframeAnimator(initialValue: RippleModel()){view, value in
                 view.overlay{
                     RippleView(
-                        model: .init(scale1: value.scale1, scale2: value.scale2)
+                        rippleShape: rippleShape,
+                        color: color,
+                        model: .init(width: width, height: height, scale1: value.scale1, scale2: value.scale2)
                     )
                 }
             } keyframes: {_ in
@@ -35,9 +47,9 @@ struct RippleModifier: ViewModifier {
 }
 
 extension View {
-    func rippleEffect(model: RippleModel) -> some View {
+    func rippleEffect<RippleShape: Shape>(rippleShape: RippleShape = .circle, color: Color = .green, width: CGFloat = 150, height: CGFloat = 150) -> some View {
         self.modifier(
-            RippleModifier(model: model)
+            RippleModifier(rippleShape: rippleShape, color: color, width: width, height: height)
         )
     }
 }
